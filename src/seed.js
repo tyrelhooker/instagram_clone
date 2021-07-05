@@ -39,7 +39,13 @@ export function seedDatabase(firebase) {
   ];
 
   for (let k = 0; k < users.length; k++) {
-    firebase.firestore().collection('users').add(users[k]);
+    firebase.firestore().collection('users').add(users[k])
+    .then((docRef) => {
+      console.log("Document written with ID: ", docRef.id);
+    })
+    .catch((error) => {
+      console.error("Error adding document: ", error);
+    })
   }
 
   for (let i = 1; i <= 5; ++i) {

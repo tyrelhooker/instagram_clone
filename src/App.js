@@ -1,14 +1,17 @@
 // import './index.css';
+import React, { lazy, Suspense } from 'react';
+
+const Dashboard = lazy(() => import ('./pages/dashboard'));
+const Login = lazy(() => import('./pages/login'));
+const SignUp = lazy(() => import('./pages/signup'));
+const Profile = lazy(() => import('./pages/profile'));
+const NotFound = lazy(() => import('./pages/not-found'));
 
 function App() {
   return (
-    <div className="App">
-      <h1 class="text-red-500">Hello, World</h1>
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4 mt-4">
-        Button
-      </button>
-
-    </div>
+    <Suspense fallback={<p>Loading...</p>}>
+      <p>This is where our content will be</p>
+    </Suspense>
   );
 }
 
