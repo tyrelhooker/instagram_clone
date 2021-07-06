@@ -1,4 +1,6 @@
 import React from 'react';
+import iphonePhoto from '../assets/images/iphone-with-profile.jpg';
+import logo from '../assets/images/logo.png';
 
 // =====================
 // Login.js page
@@ -36,6 +38,44 @@ import React from 'react';
 
 export default function Login() {
   return (
-    <p>Hello from Login</p>
+    <div className='container mx-auto border-2 border-red-500 px-4 flex items-center space-x-4'>
+      <div className='border-2 border-blue-500 max-w-lg'>
+        <img 
+          className='mx-auto' 
+          src={iphonePhoto} 
+          alt='iPhone with Instagram app' 
+        />
+      </div>
+      <div className='border-2 border-gray-400 mx-auto max-w-sm px-4 py-4' >
+        <img 
+          className='mx-auto' 
+          src={logo} 
+          alt='Instagram logo' 
+        />
+        <div>
+          <form className='space-y-2'>
+            <input 
+              className='border-2 border-gray-300 rounded min-w-full'
+              type='text' 
+              name='emailAddress' 
+              placeholder='email address' 
+            />
+            <input
+              className='border-2 border-gray-300 rounded min-w-full' 
+              type='text' 
+              name='password' 
+              placeholder='password' 
+            />
+            <button
+              className='px-4 py-1 text-white font-semibold rounded bg-blue-300 min-w-full' 
+              type='submit' 
+              value='Submit'>
+              Log in
+            </button>
+          </form>
+        </div>
+        
+      </div>
+    </div>
   )
 }
