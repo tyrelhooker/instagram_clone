@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { lazy, useEffect } from 'react';
 import iphonePhoto from '../assets/images/iphone-with-profile.jpg';
 import logo from '../assets/images/logo.png';
+import { Link } from 'react-router-dom';
+
+import * as ROUTES from '../constants/routes';
+// const SignUp = lazy(() => import('./signup'));
 
 // =====================
 // Login.js page
@@ -36,33 +40,43 @@ import logo from '../assets/images/logo.png';
 // 	- Tailwind container: https://tailwindcss.com/docs/container
 // 	- Tailwind flex: https://tailwindcss.com/docs/flex
 
+// # Challenge
+
+// Add a document title of 'Login - Instagram' 
+
+// Hint: Think about what React hook you'd use to apply the title - make sure that the hook chosen only runs on first render
+
+
+
 export default function Login() {
+  useEffect(() => {
+    document.title = 'Login - Instagram'
+  }, []);
+  
   return (
-    <div className='container mx-auto border-2 border-red-500 px-4 flex items-center space-x-4'>
-      <div className='border-2 border-blue-500 max-w-lg'>
-        <img 
-          className='mx-auto' 
-          src={iphonePhoto} 
-          alt='iPhone with Instagram app' 
-        />
+    <div className='container flex mx-auto max-w-screen-md border-2 border-red-500 p-4 items-center h-screen bg-gray-50'>
+      
+      <div className='flex w-3/5 mx-auto'>
+        <img src={iphonePhoto} alt='iPhone with Instagram app' />
       </div>
-      <div className='border-2 border-gray-400 mx-auto max-w-sm px-4 py-4' >
-        <img 
-          className='mx-auto' 
-          src={logo} 
-          alt='Instagram logo' 
-        />
-        <div>
-          <form className='space-y-2'>
+
+      <div className='flex flex-col w-2/5'>
+        <div className='flex flex-col justify-center w-full rounded border p-4 mb-4 bg-white'>
+          <h1 className='flex justify-center w-full'>
+            <img src={logo} alt='Instagram logo' className='w-6/12 m-3'/>
+          </h1>
+          <form method='POST'>
             <input 
-              className='border-2 border-gray-300 rounded min-w-full'
+              aria-label="Enter your email adress"
+              className='border rounded w-full p-4 mb-2 text-sm'
               type='text' 
               name='emailAddress' 
               placeholder='email address' 
             />
             <input
-              className='border-2 border-gray-300 rounded min-w-full' 
-              type='text' 
+              aria-label="Enter your password"
+              className='border rounded w-full p-4 mb-2 text-sm' 
+              type='password' 
               name='password' 
               placeholder='password' 
             />
@@ -74,7 +88,15 @@ export default function Login() {
             </button>
           </form>
         </div>
-        
+
+        <div className='flex justify-center items-center flex-col w-full rounded border p-4 bg-white'>
+          <p className='text-sm'> 
+            Don't have an account? {' '}
+            <Link to={ROUTES.SIGN_UP}>
+              Sign up
+            </Link> 
+          </p>
+        </div>
       </div>
     </div>
   )
