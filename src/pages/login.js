@@ -1,4 +1,4 @@
-import React, { lazy, useEffect } from 'react';
+import React, { lazy, useEffect, useState } from 'react';
 import iphonePhoto from '../assets/images/iphone-with-profile.jpg';
 import logo from '../assets/images/logo.png';
 import { Link } from 'react-router-dom';
@@ -6,53 +6,56 @@ import { Link } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 // const SignUp = lazy(() => import('./signup'));
 
-// =====================
-// Login.js page
-// =====================
-
-// =====================
-// Structure
-// =====================
-// - div (parent)
-// 	- div (child)
-// 	- div (child)
-// 		- div (child of child)
-// 		- div (child of child)
-
-
-// A container div that holds children
-// 	- div
-// 		- image of src /images/iphone-with-profile.jpg & alt tag of "iPhone with Instagram app"
-
-// 	- div to wrap the following children
-// 		- div -> (another div to wrap the form (see below for further details of the form)
-// 		- div -> a paragraph with a React router link that allows to the user to navigate to 'Sign up' - use the ROUTES file to link to this particular page
-
-// A form for the user to login with a method of POST
-
-// An input box for the user to enter their email address with a placeholder value of Email Address
-
-// An input box for the user to enter their password with a placeholder value of Password
-
-// A button so that the user can submit the form
-
-// References:
-// 	- Tailwind container: https://tailwindcss.com/docs/container
-// 	- Tailwind flex: https://tailwindcss.com/docs/flex
-
-// # Challenge
-
-// Add a document title of 'Login - Instagram' 
-
-// Hint: Think about what React hook you'd use to apply the title - make sure that the hook chosen only runs on first render
 
 
 
 export default function Login() {
+
+  const [emailAddress, setEmailAddress] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const invalid = emailAddress === '' || password < 1;
+  
+  let opacity; 
+
+  
+
+  console.log(invalid);
+
   useEffect(() => {
     document.title = 'Login - Instagram'
   }, []);
-  
+
+  const submit = e => {
+    e.preventDefault();
+  }
+
+  const handleEmailInputChange = (event) => {
+    setEmailAddress(event.target.value);
+  }
+
+  const handlePasswordInputChange = (event) => {
+    setPassword(event.target.value);
+  }
+
+  if (invalid) {
+    opacity = 'opacity-50';
+  } else {
+    opacity = 'opacity-100';
+  }
+
+  // if (valid.email && valid.password) {
+  //   console.log(valid.email, valid.password);
+  //   opacity = 'opacity-100';
+  // } else {
+  //   // console.log(valid.email)
+  //   // console.log('not working')
+  //   opacity = 'opacity-50';
+  // }
+
+
+
   return (
     <div className='container flex mx-auto max-w-screen-md border-2 border-red-500 p-4 items-center h-screen bg-gray-50'>
       
@@ -71,17 +74,21 @@ export default function Login() {
               className='border rounded w-full p-4 mb-2 text-sm'
               type='text' 
               name='emailAddress' 
-              placeholder='email address' 
+              placeholder='email address'
+              onChange={handleEmailInputChange}
+              value={emailAddress}
             />
             <input
               aria-label="Enter your password"
               className='border rounded w-full p-4 mb-2 text-sm' 
               type='password' 
               name='password' 
-              placeholder='password' 
+              placeholder='password'
+              onChange={handlePasswordInputChange}
+              value={password}
             />
             <button
-              className='px-4 py-1 text-white font-semibold rounded bg-blue-300 min-w-full' 
+              className={`px-4 py-1 text-white font-semibold rounded bg-blue-300 min-w-full ${opacity}`}
               type='submit' 
               value='Submit'>
               Log in
