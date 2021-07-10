@@ -60,7 +60,11 @@ export default function Login() {
             <img src={logo} alt='Instagram logo' className='w-6/12 m-3'/>
           </h1>
 
-          {error && <p className='mb-4 text-xs text-red-500'>{error}</p>}
+          {error && 
+            <p className='mb-4 text-xs text-red-500'>
+              {error}
+            </p>
+          }
 
           <form onSubmit={submit} method='POST'>
             <input 
