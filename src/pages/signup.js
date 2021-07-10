@@ -42,11 +42,33 @@ export default function SignUp() {
     event.preventDefault();
     try {
       await firebase.auth().createUserWithEmailAndPassword(emailAddress, password)
-      const user = firebase.auth().currentUser
-      console.log(user.email);
       
-    } catch (error) {
+      const createdUser = await firebase.auth().currentUser
+      console.log(createdUser);
+      
+      await createdUser.updateProfile({
+        displayName: userName
+      })
+
+      await firebase.firestore().collection('users').add({
+        userId: createdUser.uid,
+        username: userName.toLowerCase(),
+        fullName,
+        emailAddress: emailAddress.toLowerCase(),
+        following: [],
+        followers: [],
+        dateCreated: Date.now()
+      }) 
+    } 
+    catch (error) {
       setError(error.message);
+    } 
+    finally {
+      console.log('Update successful');
+      setUserName('');
+      setFullName('');
+      setEmailAddress('');
+      setPassword('');
     }
   }
 
