@@ -1,7 +1,8 @@
-import React, { lazy, useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import iphonePhoto from '../assets/images/iphone-with-profile.jpg';
 import logo from '../assets/images/logo.png';
 import { Link } from 'react-router-dom';
+import FirebaseContext from '../context/firebase';
 
 import * as ROUTES from '../constants/routes';
 // const SignUp = lazy(() => import('./signup'));
@@ -10,26 +11,21 @@ import * as ROUTES from '../constants/routes';
 
 
 export default function Login() {
+  const { firebase } = useContext(FirebaseContext);
 
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const invalid = emailAddress === '' || password < 1;
-  
-  let opacity; 
-
-  
-
-  console.log(invalid);
+  // const isInvalid = emailAddress === '' || password < 1;
+  const isInvalid = !emailAddress || !password;
+  // let opacity; 
 
   useEffect(() => {
     document.title = 'Login - Instagram'
   }, []);
 
-  const submit = e => {
-    e.preventDefault();
-  }
+
 
   const handleEmailInputChange = (event) => {
     setEmailAddress(event.target.value);
@@ -39,22 +35,49 @@ export default function Login() {
     setPassword(event.target.value);
   }
 
-  if (invalid) {
-    opacity = 'opacity-50';
-  } else {
-    opacity = 'opacity-100';
+  const handleUserLogin = async (email, password) => {
+    // await firebase.auth().signInWithEmailAndPassword(email, password);
+    try {
+      await firebase.auth().signInWithEmailAndPassword(email, password)
+    } catch (error) {
+      throw error;
+    }
+    
+      // .then((userCredential) => {
+      //   console.log('Signed in to firebase')
+      //   const user = userCredential.user;
+      //   console.log(user);
+      // })
   }
 
-  // if (valid.email && valid.password) {
-  //   console.log(valid.email, valid.password);
-  //   opacity = 'opacity-100';
-  // } else {
-  //   // console.log(valid.email)
-  //   // console.log('not working')
+  const submit = async (event) => {
+    event.preventDefault();
+    // await handleUserLogin(emailAddress, password);
+    try {
+      await handleUserLogin(emailAddress, password);
+    } catch (error) {
+      // console.error('outer', error.message);
+      setEmailAddress('');
+      setPassword('');
+      setError(error.message);
+    }
+
+    // try {
+    //   await firebase.auth().signInWithEmailAndPassword(emailAddress, password);
+    // } catch (error) {
+    //   setEmailAddress('');
+    //   setPassword('');
+    //   setError(error.message);
+    // }
+    
+  }
+
+
+  // if (isInvalid) {
   //   opacity = 'opacity-50';
+  // } else {
+  //   opacity = 'opacity-100';
   // }
-
-
 
   return (
     <div className='container flex mx-auto max-w-screen-md border-2 border-red-500 p-4 items-center h-screen bg-gray-50'>
@@ -68,7 +91,10 @@ export default function Login() {
           <h1 className='flex justify-center w-full'>
             <img src={logo} alt='Instagram logo' className='w-6/12 m-3'/>
           </h1>
-          <form method='POST'>
+
+          {error && <p className='mb-4 text-xs text-red-500'>{error}</p>}
+
+          <form onSubmit={submit} method='POST'>
             <input 
               aria-label="Enter your email adress"
               className='border rounded w-full p-4 mb-2 text-sm'
@@ -76,7 +102,7 @@ export default function Login() {
               name='emailAddress' 
               placeholder='email address'
               onChange={handleEmailInputChange}
-              value={emailAddress}
+              // value={emailAddress}
             />
             <input
               aria-label="Enter your password"
@@ -85,15 +111,18 @@ export default function Login() {
               name='password' 
               placeholder='password'
               onChange={handlePasswordInputChange}
-              value={password}
+              // value={password}
             />
             <button
-              className={`px-4 py-1 text-white font-semibold rounded bg-blue-300 min-w-full ${opacity}`}
+              disabled={isInvalid}
+              className={`px-4 py-1 text-white font-semibold rounded bg-blue-300 w-full ${isInvalid && 'cursor-not-allowed opacity-50'}`}
               type='submit' 
-              value='Submit'>
+              value='Submit'
+            >
               Log in
             </button>
           </form>
+          
         </div>
 
         <div className='flex justify-center items-center flex-col w-full rounded border p-4 bg-white'>
