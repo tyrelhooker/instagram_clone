@@ -28,5 +28,8 @@ yarn-error.log*
 # firebase
 firebase.js
 
-instructions.txt
+login_instructions.txt
+signup_instructions.txt
+
+
 

@@ -1,31 +1,23 @@
 import React, { useEffect, useState, useContext } from 'react';
 import iphonePhoto from '../assets/images/iphone-with-profile.jpg';
 import logo from '../assets/images/logo.png';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import FirebaseContext from '../context/firebase';
-
 import * as ROUTES from '../constants/routes';
-// const SignUp = lazy(() => import('./signup'));
-
-
-
 
 export default function Login() {
+  const history = useHistory();
   const { firebase } = useContext(FirebaseContext);
 
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  // const isInvalid = emailAddress === '' || password < 1;
   const isInvalid = !emailAddress || !password;
-  // let opacity; 
 
   useEffect(() => {
     document.title = 'Login - Instagram'
   }, []);
-
-
 
   const handleEmailInputChange = (event) => {
     setEmailAddress(event.target.value);
@@ -36,48 +28,24 @@ export default function Login() {
   }
 
   const handleUserLogin = async (email, password) => {
-    // await firebase.auth().signInWithEmailAndPassword(email, password);
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password)
     } catch (error) {
       throw error;
     }
-    
-      // .then((userCredential) => {
-      //   console.log('Signed in to firebase')
-      //   const user = userCredential.user;
-      //   console.log(user);
-      // })
   }
 
   const submit = async (event) => {
     event.preventDefault();
-    // await handleUserLogin(emailAddress, password);
     try {
       await handleUserLogin(emailAddress, password);
+      history.push(ROUTES.DASHBOARD);
     } catch (error) {
-      // console.error('outer', error.message);
       setEmailAddress('');
       setPassword('');
       setError(error.message);
     }
-
-    // try {
-    //   await firebase.auth().signInWithEmailAndPassword(emailAddress, password);
-    // } catch (error) {
-    //   setEmailAddress('');
-    //   setPassword('');
-    //   setError(error.message);
-    // }
-    
   }
-
-
-  // if (isInvalid) {
-  //   opacity = 'opacity-50';
-  // } else {
-  //   opacity = 'opacity-100';
-  // }
 
   return (
     <div className='container flex mx-auto max-w-screen-md border-2 border-red-500 p-4 items-center h-screen bg-gray-50'>
@@ -102,7 +70,6 @@ export default function Login() {
               name='emailAddress' 
               placeholder='email address'
               onChange={handleEmailInputChange}
-              // value={emailAddress}
             />
             <input
               aria-label="Enter your password"
@@ -111,7 +78,6 @@ export default function Login() {
               name='password' 
               placeholder='password'
               onChange={handlePasswordInputChange}
-              // value={password}
             />
             <button
               disabled={isInvalid}
