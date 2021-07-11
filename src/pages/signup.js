@@ -3,6 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import logo from '../assets/images/logo.png';
 import FirebaseContext from '../context/firebase';
 import * as ROUTES from '../constants/routes';
+import { doesUsernameExist } from '../services/firebase';
 
 export default function SignUp() {
   const { firebase } = useContext(FirebaseContext);
@@ -14,10 +15,6 @@ export default function SignUp() {
   const [error, setError] = useState('');
 
   const isInvalid = !userName || !fullName || !emailAddress || !password;
-
-  useEffect( () => {
-    document.title = 'Signup - Instagram';
-  }, []);
 
   // The handlers use destructuring to pull out target from event.target.value
   const handleUserNameInputChange = ({target}) => {
@@ -40,37 +37,49 @@ export default function SignUp() {
 
   const handleUserSignup = async (event) => {
     event.preventDefault();
-    try {
-      await firebase.auth().createUserWithEmailAndPassword(emailAddress, password)
-      
-      const createdUser = await firebase.auth().currentUser
-      console.log(createdUser);
-      
-      await createdUser.updateProfile({
-        displayName: userName
-      })
 
-      await firebase.firestore().collection('users').add({
-        userId: createdUser.uid,
-        username: userName.toLowerCase(),
-        fullName,
-        emailAddress: emailAddress.toLowerCase(),
-        following: [],
-        followers: [],
-        dateCreated: Date.now()
-      }) 
-    } 
-    catch (error) {
-      setError(error.message);
-    } 
-    finally {
-      console.log('Update successful');
-      setUserName('');
-      setFullName('');
-      setEmailAddress('');
-      setPassword('');
+    // Checks if userName exists in firestore DB. If !doesUsernameExist --> 
+    let userCheck = await doesUsernameExist(userName);
+    // console.log(!userCheck.length);
+    if (!userCheck.length) {
+      try {
+        await firebase.auth().createUserWithEmailAndPassword(emailAddress, password)
+        
+        const createdUser = await firebase.auth().currentUser
+        // console.log(createdUser);
+        
+        await createdUser.updateProfile({
+          displayName: userName
+        })
+
+        await firebase.firestore().collection('users').add({
+          userId: createdUser.uid,
+          username: userName.toLowerCase(),
+          fullName,
+          emailAddress: emailAddress.toLowerCase(),
+          following: [],
+          followers: [],
+          dateCreated: Date.now()
+        }) 
+      } 
+      catch (error) {
+        setError(error.message);
+      } 
+      finally {
+        // console.log('Update successful');
+        // setUserName('');
+        // setFullName('');
+        // setEmailAddress('');
+        // setPassword('');
+      }
+    } else {
+      setError('Username already exists');
     }
   }
+
+  useEffect( () => {
+    document.title = 'Signup - Instagram';
+  }, []);
 
   return (
     <div className='container flex mx-auto max-w-xs h-screen items-center'>
