@@ -6,6 +6,7 @@ import * as ROUTES from '../constants/routes';
 import { doesUsernameExist } from '../services/firebase';
 
 export default function SignUp() {
+  const history = useHistory();
   const { firebase } = useContext(FirebaseContext);
 
   const [userName, setUserName] = useState('');
@@ -39,18 +40,18 @@ export default function SignUp() {
     event.preventDefault();
 
     // Checks if userName exists in firestore DB. If !doesUsernameExist --> 
-    let userCheck = await doesUsernameExist(userName);
-    // console.log(!userCheck.length);
-    if (!userCheck.length) {
+    let usernameExists = await doesUsernameExist(userName);
+    // console.log(!usernameExists.length);
+    if (!usernameExists.length) {
       try {
-        await firebase.auth().createUserWithEmailAndPassword(emailAddress, password)
+        await firebase.auth().createUserWithEmailAndPassword(emailAddress, password);
         
-        const createdUser = await firebase.auth().currentUser
+        const createdUser = await firebase.auth().currentUser;
         // console.log(createdUser);
         
         await createdUser.updateProfile({
           displayName: userName
-        })
+        });
 
         await firebase.firestore().collection('users').add({
           userId: createdUser.uid,
@@ -60,20 +61,26 @@ export default function SignUp() {
           following: [],
           followers: [],
           dateCreated: Date.now()
-        }) 
+        });
+
+        //TODO: Redirect here to Dashboard
+        // history.push(ROUTES.DASHBOARD);
       } 
       catch (error) {
         setError(error.message);
       } 
       finally {
-        // console.log('Update successful');
-        // setUserName('');
-        // setFullName('');
-        // setEmailAddress('');
-        // setPassword('');
+        console.log('Update successful');
+        setUserName('');
+        setFullName('');
+        setEmailAddress('');
+        setPassword('');
+        //TODO: Maybe redirect to Dashboard here?
+        history.push(ROUTES.DASHBOARD);
       }
     } else {
-      setError('Username already exists');
+      setError('Username already exists. Please enter another.');
+      setUserName('');
     }
   }
 
