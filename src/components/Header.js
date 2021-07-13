@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, {useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/images/logo.png'
 import FirebaseContext from '../context/firebase';
@@ -6,6 +6,22 @@ import * as ROUTES from '../constants/routes';
 
 export default function Header() {
   const { firebase } = useContext(FirebaseContext);
+  // const loggedIn = null;
+  // let loggedIn = 'yes';
+  const [user, setUser] = useState({
+    displayName: 'tj'
+  });
+  // console.log(loggedIn);
+
+  // const handleButtonClick = () => {
+  //   if (!loggedIn) {
+  //     console.log('changed to logged in')
+  //     setLoggedIn('Logged in')
+  //   } else {
+  //     console.log('changed to logged out');
+  //     setLoggedIn(null);
+  //   }
+  // }
 
   return (
     <header className='h-16 bg-white border-b mb-8'>
@@ -21,12 +37,52 @@ export default function Header() {
           </div>
           
           <div className='flex text-center items-center'>
-            <button className='bg-blue-500 rounded text-white  px-4 py-1.5'>
-                Log in
-            </button>
-            <button className='bg-white rounded px-4 py-1.5'>
-              Sign Up
-            </button>
+            
+            
+            {user ? (
+              <>
+                <Link to={ROUTES.DASHBOARD} aria-label='Home'>
+                  Dashboard
+                </Link>
+                <button
+                  type='button'
+                  title='Log Out' 
+                  className='bg-blue-500 rounded text-white  px-4 py-1.5' 
+                  onClick={() => { firebase.auth().signOut() }}
+                  onKeyDown={(e) => e.key === 'enter' && firebase.auth().signOut()}
+                >
+                  Log Out
+                </button>
+                <div className='flex items-center cursor-pointer'>
+                  <Link to={`/p/${user.displayName}`}>
+                    <img
+                      className='flex rounded-full h-8 w-8'
+                      scr={`/images/avatars/${user.displayName}.jpg`}
+                      alt={`${user.displayName} profile picture`}
+                    />
+                  </Link>
+                </div>
+              </>
+                
+              
+              
+            ) : (
+              <>
+                <Link to={ROUTES.LOGIN} aria-label='Login'>
+                  <button 
+                    type='button'
+                    className='bg-blue-500 rounded text-white px-4 py-1.5'>
+                    Log In
+                  </button>
+                </Link>
+                <Link to={ROUTES.SIGN_UP} aria-label='Sign Up'>
+                  <button className='bg-white rounded px-4 py-1.5'>
+                    Sign Up
+                  </button>
+                </Link>
+              </>
+            )}
+
           </div>
 
 
