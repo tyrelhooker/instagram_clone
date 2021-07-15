@@ -8,20 +8,10 @@ export default function Header() {
   const { firebase } = useContext(FirebaseContext);
   // const loggedIn = null;
   // let loggedIn = 'yes';
-  const [user, setUser] = useState({
+  const user = {
     displayName: 'tj'
-  });
-  // console.log(loggedIn);
+  }
 
-  // const handleButtonClick = () => {
-  //   if (!loggedIn) {
-  //     console.log('changed to logged in')
-  //     setLoggedIn('Logged in')
-  //   } else {
-  //     console.log('changed to logged out');
-  //     setLoggedIn(null);
-  //   }
-  // }
 
   return (
     <header className='h-16 bg-white border-b mb-8'>
@@ -57,14 +47,13 @@ export default function Header() {
                   <Link to={`/p/${user.displayName}`}>
                     <img
                       className='flex rounded-full h-8 w-8'
-                      scr={`/images/avatars/${user.displayName}.jpg`}
-                      alt={`${user.displayName} profile picture`}
+                      src={`/images/avatars/${user.displayName}.jpg`}
+                      alt={`${user.displayName} profile avatar`}
                     />
                   </Link>
                 </div>
               </>
-                
-              
+
               
             ) : (
               <>
