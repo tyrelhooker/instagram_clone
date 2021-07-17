@@ -29,7 +29,7 @@ export default function Login() {
 
   const handleUserLogin = async (email, password) => {
     try {
-      await firebase.auth().signInWithEmailAndPassword(email, password)
+      await firebase.auth().signInWithEmailAndPassword(email, password);
     } catch (error) {
       throw error;
     }
@@ -39,6 +39,28 @@ export default function Login() {
     event.preventDefault();
     try {
       await handleUserLogin(emailAddress, password);
+      const loggedInUser = await firebase.auth().currentUser;
+
+      if (!loggedInUser.displayName) {
+        const setName = (userData) => {
+          let name = '';
+          for (const doc of userData.docs) {
+            name = doc.data().username;
+          }
+          return name;
+        }
+        
+        const userData = await firebase
+          .firestore()
+          .collection('users')
+          .where('userId', "==", loggedInUser.uid)
+          .get()
+
+        await loggedInUser.updateProfile({
+          displayName: setName(userData)
+        })
+      };
+
       history.push(ROUTES.DASHBOARD);
     } catch (error) {
       setEmailAddress('');
