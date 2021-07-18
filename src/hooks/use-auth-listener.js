@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import FirebaseContext from '../context/firebase';
 
+// This hook listens for user authentication
 export default function useAuthListener() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('authUser')));
 
