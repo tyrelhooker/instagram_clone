@@ -39,17 +39,19 @@ export default function Header() {
                       />
                   </svg>
                 </Link>
+
                 <button
                   type='button'
                   title='Log Out' 
-                  className='bg-blue-500 rounded text-white  px-4 py-1.5 mr-6' 
-                  onClick={() => { firebase.auth().signOut() }}
+                  className='bg-blue-500 rounded text-white px-4 py-1.5 mr-6' 
+                  onClick={() => firebase.auth().signOut()}
                   onKeyDown={(e) => e.key === 'enter' && firebase.auth().signOut()}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                   </svg>
                 </button>
+
                 <div className='flex items-center cursor-pointer'>
                   <Link to={`/p/${user.displayName}`}>
                     <img
@@ -69,6 +71,7 @@ export default function Header() {
                     Log In
                   </button>
                 </Link>
+
                 <Link to={ROUTES.SIGN_UP} aria-label='Sign Up'>
                   <button 
                     type='button'
