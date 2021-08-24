@@ -9,16 +9,19 @@ export default function useUser() {
 
   useEffect(() => {
     async function getUserObjByUserId() {
-      // Querys user data in firestore using firebase service
+      // Querys user data in firestore using firebase service. destructure response from array into an object. 
       const [response] = await getUserByUserId(user.uid);
-      setActiveUser({ ...response }); // pass the user response to the state of activeUser
+
+      // spread the user response object to the state of activeUser to protect the values passed to activeUser
+      setActiveUser({ ...response });
     }
     // Test for user exists
     if (user && user.uid) {
       getUserObjByUserId();
     }
   }, [user]);
-
-  return { user: activeUser }; // return the activeUser as user to the hook when called
+  
+  // return the activeUser as user to the hook when called
+  return { user: activeUser }; 
 }
 

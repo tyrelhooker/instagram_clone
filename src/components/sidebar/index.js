@@ -1,15 +1,19 @@
 import React from 'react';
 import useUser from '../../hooks/use-user';
-import UserContext from '../../context/user';
+import User from './User';
 
 export default function Sidebar() {
-  // Destructure from returned value in use-user hook with a default value set to empty object in case user is empty
-  const { user: { docId, userId, following, username, fullName } = {} } = useUser();
+  
+  // Nest object destructure from returned value in use-user hook
+  const { 
+    user: { docId, userId, following, username, fullName }
+  } = useUser();
   
   return (
     <div className='p-4'>
-      <p>This is the Sidebar</p>
+      <User username={username} fullName={fullName} />
     </div>
-    
   )
 }
+
+Sidebar.whyDidYouRender = true;

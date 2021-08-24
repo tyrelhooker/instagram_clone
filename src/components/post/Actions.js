@@ -11,8 +11,8 @@ export default function Actions({ docId, likes, userLikedPhoto: likedPhoto, hand
   const [totalLikes, setTotalLikes] = useState(likes.length);
   const { firebase, FieldValue } = useContext(FirebaseContext);
 
-  console.log(likes);
-  console.log(toggleLiked);
+  // console.log(likes);
+  // console.log(toggleLiked);
 
   const handleToggleLiked = async () => {
     setToggleLiked((toggleLiked) => !toggleLiked);
@@ -48,7 +48,7 @@ export default function Actions({ docId, likes, userLikedPhoto: likedPhoto, hand
               }
             }}
             className={`w-8 mr-4 select-none cursor-pointer ${
-                toggleLiked ? 'fill-current text-red' : 'text-red'
+                toggleLiked ? 'fill-current text-red-500' : 'text-black'
             }`}
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
