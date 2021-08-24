@@ -1,7 +1,7 @@
 // import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Header({ content: {username} }) {
+export default function Header({ username }) {
   return (
     <div className='flex border-b items-center h-4 p-4 py-9'>
       <Link to={`/p/${username}`} className='flex items-center'>
