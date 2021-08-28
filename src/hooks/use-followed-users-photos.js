@@ -6,10 +6,7 @@ export default function useFollowedUsersPhotos() {
   const [photos, setPhotos] = useState(null);
   const { user: { uid: userId = ''} } = useContext(UserContext);
   
-  
-  
-  
-
+  // TODO: Figure out why userId is not a sufficient dependency. I am receiving notification in devtools that the useEffect has a missing dependency 'photos'
   useEffect(() => {
     async function getTimelinePhotos() {
       const followingUserIds = await getUserByUserId(userId);

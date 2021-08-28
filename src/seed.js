@@ -24,7 +24,7 @@ export function seedDatabase(firebase) {
       fullName: 'Salvador Dalí',
       emailAddress: 'salvador@dali.com',
       following: [],
-      followers: ['98lsPOpu3yTQ7nvbK9r53KMM7yG2'],
+      followers: [],
       dateCreated: Date.now()
     },
     {
@@ -33,7 +33,7 @@ export function seedDatabase(firebase) {
       fullName: 'George Orwell',
       emailAddress: 'george@orwell.com',
       following: [],
-      followers: ['98lsPOpu3yTQ7nvbK9r53KMM7yG2'],
+      followers: [],
       dateCreated: Date.now()
     }
   ];
