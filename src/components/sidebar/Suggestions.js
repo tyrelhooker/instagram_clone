@@ -1,6 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
 import Skeleton from 'react-loading-skeleton';
-import { Link } from 'react-router-dom';
+import SuggestedProfile from './Suggested-profile';
 import { getSuggestedProfiles } from '../../services/firebase';
 
 // Pass in userId so you dont return a bunch of random profiles, but suggested profiles not following
@@ -22,24 +22,27 @@ const Suggestions = ({ userId }) => {
   return (
     !profiles ? 
       (
-        <Skeleton count={3} height={61} />
-      ) : (
-        profiles.map((profile) => 
-          <Link to={`/p/${profile.username}`} className='grid grid-cols-4 gap-4 mb-4 items-center'>
-            <div>
-              <img
-                className='rounded-full w-8 flex mr-3'
-                src={`/images/avatars/${profile.username}.jpg`}
-                alt={`Suggested profile ${profile.username}`}
-              />
+        <Skeleton count={1} height={150} />
+      ) : profiles.length > 0 ? 
+        (
+          <div className='flex flex-col'>
+            <div className='flex items-center align-items justify-between mb-2 mt-2'>
+              <p className='font-bold text-gray-700'>Suggestions for you</p>
             </div>
-            <div className='col-span-3'>
-              <p className='font-bold text-sm'>{profile.username}</p>
-              <p className='text-sm'>{profile.fullName}</p>
+            <div className='grid gap-5 mt-4'>
+              {profiles.map((profile) => (
+                <SuggestedProfile
+                  key={profile.docId}
+                  userDocId={profile.docId}
+                  username={profile.username}
+                  fullName={profile.fullName}
+                  profileId={profile.userId}
+                  userId={userId}
+                />
+              ))}
             </div>
-          </Link>
-        )
-      )
+          </div>
+        ) : null
   )
 }
 
