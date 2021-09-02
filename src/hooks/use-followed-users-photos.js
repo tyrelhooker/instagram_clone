@@ -16,7 +16,7 @@ export default function useFollowedUsersPhotos() {
         
         followedUserPhotos.sort((a, b) => b.dateCreated - a.dateCreated);
         setPhotos(followedUserPhotos);
-        console.log('response in getTimelinePhotos ==>', photos);
+        // console.log('response in getTimelinePhotos ==>', photos);
       }
     }
 
